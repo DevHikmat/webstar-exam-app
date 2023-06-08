@@ -1,0 +1,30 @@
+.exam-box {
+  a {
+    text-decoration: none;
+    color: #444;
+    .exam-item {
+      transition: 0.3s ease;
+      border-radius: 20px;
+      &:hover {
+        background-color: #6356e5;
+        color: white;
+      }
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      &-brand {
+        i {
+          font-size: 50px;
+        }
+      }
+      &-info {
+        h4 {
+        }
+        p {
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+}
