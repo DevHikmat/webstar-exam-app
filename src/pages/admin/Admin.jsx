@@ -2,22 +2,22 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "./Cabinet.scss";
+import "./Admin.scss";
 import logo from "../../static/images/logo1.png";
-import { items } from "../../utils/AntdSettings";
+import { adminItems } from "../../utils/AntdSettings";
 import { Routes, Route } from "react-router-dom";
 import ExamBox from "../../components/ExamBox";
 import HistoryBox from "../../components/HistoryBox";
 
 const { Header, Sider, Content } = Layout;
 
-const Cabinet = () => {
+const Admin = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   return (
-    <div className="cabinet">
+    <div className="admin">
       <Layout>
         <Sider
           trigger={null}
@@ -27,7 +27,7 @@ const Cabinet = () => {
           className="shadow"
         >
           <div className="demo-logo-vertical">
-            <Link to="/cabinet" className="logo-box">
+            <Link to="/admin" className="logo-box">
               <img src={logo} alt="logo" className="img-fluid rounded-circle" />
             </Link>
           </div>
@@ -35,7 +35,7 @@ const Cabinet = () => {
             theme="light"
             mode="inline"
             defaultSelectedKeys={["1"]}
-            items={items}
+            items={adminItems}
           />
         </Sider>
         <Layout>
@@ -80,4 +80,4 @@ const Cabinet = () => {
     </div>
   );
 };
-export default Cabinet;
+export default Admin;

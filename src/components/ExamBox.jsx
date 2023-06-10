@@ -12,7 +12,7 @@ const quizs = [
   },
   {
     id: 2,
-    title: "Css",
+    title: "Css3",
     icon: "fa-brands fa-css3",
     length: 20,
     deadline: 14,
@@ -20,7 +20,7 @@ const quizs = [
   },
   {
     id: 3,
-    title: "JavaScript 1 simple",
+    title: "JavaScript simple",
     icon: "fa-brands fa-square-js",
     length: 20,
     deadline: 14,
@@ -28,7 +28,7 @@ const quizs = [
   },
   {
     id: 4,
-    title: "JavaScript 2 medium",
+    title: "JavaScript medium",
     icon: "fa-brands fa-js",
     length: 20,
     deadline: 14,
