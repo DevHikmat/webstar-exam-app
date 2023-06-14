@@ -11,15 +11,15 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <div>
     <ToastContainer
-      position="bottom-right"
+      position="top-center"
       autoClose={2000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
+      hideProgressBar={true}
+      newestOnTop={true}
+      closeOnClick={false}
       rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
+      pauseOnFocusLoss={false}
+      draggable={true}
+      pauseOnHover={true}
       theme="light"
     />
     <Provider store={store}>
@@ -27,3 +27,7 @@ root.render(
     </Provider>
   </div>
 );
+
+// admin
+// bekzod@gmail.com
+// bekzod123

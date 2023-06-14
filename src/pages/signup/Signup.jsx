@@ -1,8 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthService } from "../../services/AuthService";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  authUserStart,
+  authUserSuccess,
+  authUserFailure,
+} from "../../redux/authSlice";
+import { toast } from "react-toastify";
 import "./Signup.scss";
-import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const { groups } = useSelector((state) => state.groups);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [user, setUser] = useState(null);
+
+  const handleChange = (e) => {
+    setUser({
+      ...user,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleRegister = async () => {
+    dispatch(authUserStart());
+    try {
+      const data = await AuthService.signup(user);
+      localStorage.setItem("token", data.token);
+      dispatch(authUserSuccess(data));
+      toast.success("Kirish muvoffaqiyatli amalga oshirildi!");
+      data.user.role === "admin" ? navigate("/admin") : navigate("/cabinet");
+    } catch (error) {
+      dispatch(authUserFailure(error.response.data.message));
+      toast.error(error.response.data.message);
+    }
+  };
   return (
     <div className="signup">
       <div className="signup-content shadow">
@@ -16,6 +49,7 @@ const Signup = () => {
               <label htmlFor="firstname" className="fa-solid fa-user"></label>
               <input
                 id="firstname"
+                onChange={(e) => handleChange(e)}
                 type="text"
                 className="shadow"
                 placeholder="Ismingiz"
@@ -25,6 +59,7 @@ const Signup = () => {
               <label htmlFor="lastname" className="fa-solid fa-user"></label>
               <input
                 id="lastname"
+                onChange={(e) => handleChange(e)}
                 type="text"
                 className="shadow"
                 placeholder="Familyangiz"
@@ -34,6 +69,7 @@ const Signup = () => {
               <label htmlFor="email" className="fa-solid fa-envelope"></label>
               <input
                 id="email"
+                onChange={(e) => handleChange(e)}
                 type="email"
                 className="shadow"
                 placeholder="E-mail"
@@ -43,21 +79,37 @@ const Signup = () => {
               <label htmlFor="password" className="fa-solid fa-lock"></label>
               <input
                 id="password"
+                onChange={(e) => handleChange(e)}
                 type="password"
                 className="shadow"
                 placeholder="parol"
               />
             </div>
             <div className="input-box mb-3">
-              <label for="group" className="fa-solid fa-users-line"></label>
-              <select name="group" id="group" className="shadow">
-                <option value="">Guruhni tanlash</option>
-                <option value="">H1</option>
-                <option value="">H2</option>
-                <option value="">H3</option>
+              <label htmlFor="group" className="fa-solid fa-users-line"></label>
+              <select
+                name="group"
+                id="group"
+                className="shadow"
+                onChange={(e) => handleChange(e)}
+              >
+                <option style={{ display: "none" }}>Guruhni tanlash</option>
+                {groups?.map((group, index) => {
+                  return (
+                    <option key={index} value={group._id}>
+                      {group.name}
+                    </option>
+                  );
+                })}
               </select>
             </div>
-            <button className="signup-btn mb-2">register</button>
+            <button
+              type="button"
+              onClick={handleRegister}
+              className="signup-btn mb-2"
+            >
+              register
+            </button>
             <div>
               <Link to="/">Or login</Link>
             </div>

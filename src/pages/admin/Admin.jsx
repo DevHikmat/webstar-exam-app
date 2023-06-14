@@ -2,12 +2,12 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "./Admin.scss";
-import logo from "../../static/images/logo1.png";
 import { adminItems } from "../../utils/AntdSettings";
 import { Routes, Route } from "react-router-dom";
+import "./Admin.scss";
+import logo from "../../static/images/logo1.png";
 import ExamBox from "../../components/ExamBox";
-import HistoryBox from "../../components/HistoryBox";
+import GroupsBox from "../../components/GroupsBox";
 
 const { Header, Sider, Content } = Layout;
 
@@ -72,7 +72,7 @@ const Admin = () => {
           >
             <Routes>
               <Route path="/" element={<ExamBox />} />
-              <Route path="/tarix" element={<HistoryBox />} />
+              <Route path="/groups" element={<GroupsBox />} />
             </Routes>
           </Content>
         </Layout>

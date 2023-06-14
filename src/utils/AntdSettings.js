@@ -15,7 +15,7 @@ export const items = [
     key: "2",
     icon: <i className="fa-solid fa-layer-group"></i>,
     label: (
-      <Link to="tarix" style={{ textDecoration: "none" }}>
+      <Link to="history" style={{ textDecoration: "none" }}>
         Imtihonlar tarixi
       </Link>
     ),
@@ -41,13 +41,22 @@ export const adminItems = [
     key: "2",
     icon: <i className="fa-solid fa-layer-group"></i>,
     label: (
+      <Link to="groups" style={{ textDecoration: "none" }}>
+        Guruhlar
+      </Link>
+    ),
+  },
+  {
+    key: "3",
+    icon: <i className="fa-solid fa-user-group"></i>,
+    label: (
       <Link to="users" style={{ textDecoration: "none" }}>
         O'quvchilar
       </Link>
     ),
   },
   {
-    key: "3",
+    key: "4",
     icon: <i className="fa-solid fa-arrow-right-from-bracket"></i>,
     label: <div className="logout-box">Profildan chiqish</div>,
   },

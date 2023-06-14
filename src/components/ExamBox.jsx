@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { Modal } from "antd";
+import { useNavigate } from "react-router-dom";
 import "./Exam.scss";
 import ExamItem from "./ExamItem";
 const quizs = [
@@ -45,15 +47,46 @@ const quizs = [
 ];
 
 const ExamBox = () => {
+  const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+    navigate(`${title.replace(" ", "-").toLowerCase()}`);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
-    <div className="exam-box">
+    <div className="exam-box" style={{ cursor: "pointer" }}>
       <div className="container">
         <div className="row">
-          {quizs.map((item) => {
-            return <ExamItem quiz={item} />;
+          {quizs.map((item, index) => {
+            return (
+              <ExamItem
+                key={index}
+                quiz={item}
+                setIsModalOpen={setIsModalOpen}
+                setTitle={setTitle}
+              />
+            );
           })}
         </div>
       </div>
+      <Modal onOk={handleOk} onCancel={handleCancel} open={isModalOpen}>
+        <h5>
+          <i className="fa-solid fa-warning text-warning"></i> Diqqat! Ushbu
+          yo'riqnomaga amal qiling.
+        </h5>
+        <ol className="">
+          <li>Sahifani yangilamang.</li>
+          <li>Sahifani yangilamang.</li>
+          <li>Sahifani yangilamang.</li>
+          <li>Sahifani yangilamang.</li>
+          <li>Sahifani yangilamang.</li>
+        </ol>
+      </Modal>
     </div>
   );
 };

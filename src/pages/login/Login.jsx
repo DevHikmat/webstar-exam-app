@@ -1,8 +1,38 @@
-import React from "react";
+import React, { useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthService } from "../../services/AuthService";
+import { useDispatch } from "react-redux";
+import {
+  authUserStart,
+  authUserSuccess,
+  authUserFailure,
+} from "../../redux/authSlice";
+import { toast } from "react-toastify";
 import "./Login.scss";
-import { Link } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const email_rf = useRef();
+  const passw_rf = useRef();
+
+  const handleLogin = async () => {
+    dispatch(authUserStart());
+    try {
+      const data = await AuthService.login({
+        email: email_rf.current.value,
+        password: passw_rf.current.value,
+      });
+      localStorage.setItem("token", data.token);
+      dispatch(authUserSuccess(data));
+      toast.success("Kirish muvoffaqiyatli amalga oshirildi!");
+      data.user.role === "admin" ? navigate("/admin") : navigate("/cabinet");
+    } catch (error) {
+      console.log(error);
+      dispatch(authUserFailure(error.response.data.message));
+      toast.error(error.response.data.message);
+    }
+  };
   return (
     <div className="login">
       <div className="login-content shadow">
@@ -14,13 +44,29 @@ const Login = () => {
           <form>
             <div className="input-box mb-3">
               <label className="fa-solid fa-envelope"></label>
-              <input type="email" className="shadow" placeholder="E-mail" />
+              <input
+                ref={email_rf}
+                type="email"
+                className="shadow"
+                placeholder="E-mail"
+              />
             </div>
             <div className="input-box mb-3">
               <label className="fa-solid fa-lock"></label>
-              <input type="password" className="shadow" placeholder="parol" />
+              <input
+                ref={passw_rf}
+                type="password"
+                className="shadow"
+                placeholder="parol"
+              />
             </div>
-            <button className="login-btn mb-2">login</button>
+            <button
+              type="button"
+              onClick={handleLogin}
+              className="login-btn mb-2"
+            >
+              login
+            </button>
             <div>
               <Link to="/register">Or register</Link>
             </div>

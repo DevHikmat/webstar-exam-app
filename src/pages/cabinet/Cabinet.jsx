@@ -2,10 +2,10 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "./Cabinet.scss";
-import logo from "../../static/images/logo1.png";
 import { items } from "../../utils/AntdSettings";
 import { Routes, Route } from "react-router-dom";
+import "./Cabinet.scss";
+import logo from "../../static/images/logo1.png";
 import ExamBox from "../../components/ExamBox";
 import HistoryBox from "../../components/HistoryBox";
 
@@ -72,7 +72,7 @@ const Cabinet = () => {
           >
             <Routes>
               <Route path="/" element={<ExamBox />} />
-              <Route path="/tarix" element={<HistoryBox />} />
+              <Route path="/history" element={<HistoryBox />} />
             </Routes>
           </Content>
         </Layout>
