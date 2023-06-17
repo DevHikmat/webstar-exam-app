@@ -9,6 +9,7 @@ import {
 } from "../../redux/authSlice";
 import { toast } from "react-toastify";
 import "./Signup.scss";
+import { getOneUserSuccess } from "../../redux/userSlice";
 
 const Signup = () => {
   const { groups } = useSelector((state) => state.groups);
@@ -27,8 +28,10 @@ const Signup = () => {
     dispatch(authUserStart());
     try {
       const data = await AuthService.signup(user);
+      localStorage.setItem("id", data.user._id);
       localStorage.setItem("token", data.token);
-      dispatch(authUserSuccess(data));
+      dispatch(authUserSuccess());
+      dispatch(getOneUserSuccess(data.user));
       toast.success("Kirish muvoffaqiyatli amalga oshirildi!");
       data.user.role === "admin" ? navigate("/admin") : navigate("/cabinet");
     } catch (error) {
@@ -111,7 +114,7 @@ const Signup = () => {
               register
             </button>
             <div>
-              <Link to="/">Or login</Link>
+              <Link to="/login">Or login</Link>
             </div>
           </form>
         </div>

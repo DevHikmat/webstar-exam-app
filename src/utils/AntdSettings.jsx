@@ -1,4 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+const useLogout = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Perform logout logic here
+    // Once logout is successful, navigate to a different route
+    navigate("/another-page"); // Replace '/another-page' with the desired route
+  };
+
+  return handleLogout;
+};
+
+export default useLogout;
 
 // ASIDE MENU ITEMS SETTINGS
 export const items = [
@@ -36,6 +50,7 @@ export const adminItems = [
         Imtihonlar
       </Link>
     ),
+    url: "",
   },
   {
     key: "2",
@@ -45,6 +60,7 @@ export const adminItems = [
         Guruhlar
       </Link>
     ),
+    url: "/groups",
   },
   {
     key: "3",
@@ -54,10 +70,6 @@ export const adminItems = [
         O'quvchilar
       </Link>
     ),
-  },
-  {
-    key: "4",
-    icon: <i className="fa-solid fa-arrow-right-from-bracket"></i>,
-    label: <div className="logout-box">Profildan chiqish</div>,
+    url: "/users",
   },
 ];

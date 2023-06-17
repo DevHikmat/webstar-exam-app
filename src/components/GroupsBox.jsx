@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { GroupService } from "../services/GroupService";
 import {
   Button,
   Modal,
@@ -10,9 +12,6 @@ import {
   Popconfirm,
   Select,
 } from "antd";
-import { useSelector, useDispatch } from "react-redux";
-import { GroupService } from "../services/GroupService";
-import { toast } from "react-toastify";
 import {
   addGroupStart,
   addGroupSuccess,
@@ -20,7 +19,14 @@ import {
   updateGroupStart,
   updateGroupSuccess,
 } from "../redux/groupSlice";
+import { toast } from "react-toastify";
 import "./GroupBox.scss";
+import {
+  CheckOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -41,8 +47,7 @@ const GroupsBox = () => {
     setIsModalOpen(false);
     dispatch(addGroupStart());
     try {
-      const token = localStorage.getItem("token");
-      const data = await GroupService.addGroup(token, group);
+      const data = await GroupService.addGroup(group);
       dispatch(addGroupSuccess());
       toast.success(data.message);
     } catch (error) {
@@ -59,8 +64,7 @@ const GroupsBox = () => {
 
   const handleDeleteGroup = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-      const data = await GroupService.deleteGroup(token, id);
+      const data = await GroupService.deleteGroupById(id);
       dispatch(deleteGroup());
       toast.success(data.message);
     } catch (error) {
@@ -90,8 +94,7 @@ const GroupsBox = () => {
     let { editName, editCompany } = form.getFieldsValue();
     let group = { name: editName, company: editCompany };
     try {
-      const token = localStorage.getItem("token");
-      const data = await GroupService.updateGroup(token, editingRow, group);
+      const data = await GroupService.updateGroup(editingRow, group);
       console.log(data);
       dispatch(updateGroupSuccess());
       toast.success(data.message);
@@ -140,13 +143,12 @@ const GroupsBox = () => {
         return (
           <>
             {group._id === editingRow ? (
-              <Button className="btn-success" onClick={saveChanges}>
-                <i className="fa-solid fa-check"></i>
-              </Button>
+              <Button icon={<CheckOutlined />} onClick={saveChanges}></Button>
             ) : (
-              <Button className="btn-warning" onClick={() => openInputs(group)}>
-                <i className="fa-solid fa-pen"></i>
-              </Button>
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => openInputs(group)}
+              ></Button>
             )}
             <Popconfirm
               title="Guruh o'chirilsinmi?"
@@ -155,9 +157,11 @@ const GroupsBox = () => {
               okType="danger"
               onConfirm={() => handleDeleteGroup(group._id)}
             >
-              <Button className="btn-danger ms-3">
-                <i className="fa-solid fa-trash"></i>
-              </Button>
+              <Button
+                danger
+                className="ms-2"
+                icon={<DeleteOutlined />}
+              ></Button>
             </Popconfirm>
           </>
         );
@@ -172,8 +176,8 @@ const GroupsBox = () => {
           <Button
             onClick={showModal}
             className="d-flex align-items-center gap-2 mb-4"
+            icon={<PlusOutlined />}
           >
-            <i className="fa-solid fa-plus"></i>
             Guruh qo'shish
           </Button>
           <Modal

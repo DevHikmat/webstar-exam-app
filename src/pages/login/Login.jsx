@@ -9,6 +9,7 @@ import {
 } from "../../redux/authSlice";
 import { toast } from "react-toastify";
 import "./Login.scss";
+import { getOneUserSuccess } from "../../redux/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,9 +24,12 @@ const Login = () => {
         email: email_rf.current.value,
         password: passw_rf.current.value,
       });
+      localStorage.setItem("id", data.user._id);
       localStorage.setItem("token", data.token);
-      dispatch(authUserSuccess(data));
+      dispatch(authUserSuccess());
+      dispatch(getOneUserSuccess(data.user));
       toast.success("Kirish muvoffaqiyatli amalga oshirildi!");
+      console.log(data);
       data.user.role === "admin" ? navigate("/admin") : navigate("/cabinet");
     } catch (error) {
       console.log(error);
@@ -68,7 +72,7 @@ const Login = () => {
               login
             </button>
             <div>
-              <Link to="/register">Or register</Link>
+              <Link to="/signup">Or register</Link>
             </div>
           </form>
         </div>

@@ -11,6 +11,7 @@ export const groupSlice = createSlice({
   name: "groups",
   initialState,
   reducers: {
+    // GET ALL GROUPS
     getGroupsStart: (state) => {
       state.isLoading = true;
     },
@@ -23,6 +24,7 @@ export const groupSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    // ADD GROUP
     addGroupStart: (state) => {
       state.isLoading = true;
     },
@@ -30,6 +32,7 @@ export const groupSlice = createSlice({
       state.isLoading = false;
       state.isChange = !state.isChange;
     },
+    // UPDATE GROUP
     updateGroupStart: (state) => {
       state.isLoading = true;
     },
@@ -37,6 +40,7 @@ export const groupSlice = createSlice({
       state.isLoading = false;
       state.isChange = !state.isChange;
     },
+    // DELETE GROUP
     deleteGroup: (state) => {
       state.isChange = !state.isChange;
     },

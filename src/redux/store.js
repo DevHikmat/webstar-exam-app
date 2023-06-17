@@ -3,6 +3,7 @@ import auth from "./authSlice";
 import quiz from "./quizSlice";
 import question from "./questionSlice";
 import groups from "./groupSlice";
+import users from "./userSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     quiz,
     question,
     groups,
+    users,
   },
 });

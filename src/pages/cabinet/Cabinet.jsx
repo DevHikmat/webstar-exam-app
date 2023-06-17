@@ -4,14 +4,16 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { items } from "../../utils/AntdSettings";
 import { Routes, Route } from "react-router-dom";
-import "./Cabinet.scss";
+import { useSelector } from "react-redux";
 import logo from "../../static/images/logo1.png";
 import ExamBox from "../../components/ExamBox";
 import HistoryBox from "../../components/HistoryBox";
+import "./Cabinet.scss";
 
 const { Header, Sider, Content } = Layout;
 
 const Cabinet = () => {
+  const { currentUser } = useSelector((state) => state.users);
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
@@ -58,7 +60,9 @@ const Cabinet = () => {
             />
             <div className="user-title">
               <h4>
-                <Link to="profile">Hikmatullo Mullajonov</Link>
+                <Link to="profile">
+                  {currentUser?.firstname} {currentUser?.lastname}
+                </Link>
               </h4>
             </div>
           </Header>

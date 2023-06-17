@@ -5,28 +5,16 @@ export const GroupService = {
     const res = await axiosInstance.get(`/group`);
     return res.data;
   },
-  async addGroup(token, group) {
-    const res = await axiosInstance.post("/group", group, {
-      headers: {
-        Authorization: "Baerer " + token,
-      },
-    });
+  async addGroup(group) {
+    const res = await axiosInstance.post("/group", group);
     return res.data;
   },
-  async updateGroup(token, id, group) {
-    const res = await axiosInstance.patch(`/group/${id}`, group, {
-      headers: {
-        Authorization: "Baerer " + token,
-      },
-    });
+  async updateGroup(id, group) {
+    const res = await axiosInstance.patch(`/group/${id}`, group);
     return res.data;
   },
-  async deleteGroup(token, id) {
-    const res = await axiosInstance.delete(`/group/${id}`, {
-      headers: {
-        Authorization: "Baerer " + token,
-      },
-    });
+  async deleteGroupById(id) {
+    const res = await axiosInstance.delete(`/group/${id}`);
     return res.data;
   },
 };
