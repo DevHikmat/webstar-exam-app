@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthService } from "../../services/AuthService";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { AuthService } from "../../services/AuthService";
 import {
   authUserStart,
   authUserSuccess,
   authUserFailure,
 } from "../../redux/authSlice";
-import { toast } from "react-toastify";
 import "./Signup.scss";
 import { getOneUserSuccess } from "../../redux/userSlice";
 
@@ -24,7 +24,8 @@ const Signup = () => {
     });
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault();
     dispatch(authUserStart());
     try {
       const data = await AuthService.signup(user);
@@ -47,7 +48,7 @@ const Signup = () => {
         </div>
         <div className="signup-content-right">
           <h3>Sign up</h3>
-          <form>
+          <form onSubmit={(e) => handleRegister(e)}>
             <div className="input-box mb-3">
               <label htmlFor="firstname" className="fa-solid fa-user"></label>
               <input
@@ -56,6 +57,7 @@ const Signup = () => {
                 type="text"
                 className="shadow"
                 placeholder="Ismingiz"
+                required
               />
             </div>
             <div className="input-box mb-3">
@@ -66,6 +68,7 @@ const Signup = () => {
                 type="text"
                 className="shadow"
                 placeholder="Familyangiz"
+                required
               />
             </div>
             <div className="input-box mb-3">
@@ -76,6 +79,7 @@ const Signup = () => {
                 type="email"
                 className="shadow"
                 placeholder="E-mail"
+                required
               />
             </div>
             <div className="input-box mb-3">
@@ -86,6 +90,7 @@ const Signup = () => {
                 type="password"
                 className="shadow"
                 placeholder="parol"
+                required
               />
             </div>
             <div className="input-box mb-3">
@@ -95,8 +100,11 @@ const Signup = () => {
                 id="group"
                 className="shadow"
                 onChange={(e) => handleChange(e)}
+                required
               >
-                <option style={{ display: "none" }}>Guruhni tanlash</option>
+                <option value="" style={{ display: "none" }}>
+                  Guruhni tanlash
+                </option>
                 {groups?.map((group, index) => {
                   return (
                     <option key={index} value={group._id}>
@@ -106,11 +114,7 @@ const Signup = () => {
                 })}
               </select>
             </div>
-            <button
-              type="button"
-              onClick={handleRegister}
-              className="signup-btn mb-2"
-            >
+            <button type="submit" className="signup-btn mb-2">
               register
             </button>
             <div>

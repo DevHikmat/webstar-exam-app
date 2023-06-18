@@ -60,7 +60,8 @@ function App() {
   };
 
   useEffect(() => {
-    getCurrentUser();
+    if (localStorage.getItem("token")) getCurrentUser();
+    else navigate("/login");
   }, []);
 
   useEffect(() => {

@@ -1,18 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
-
-const useLogout = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    // Perform logout logic here
-    // Once logout is successful, navigate to a different route
-    navigate("/another-page"); // Replace '/another-page' with the desired route
-  };
-
-  return handleLogout;
-};
-
-export default useLogout;
+import { Link } from "react-router-dom";
 
 // ASIDE MENU ITEMS SETTINGS
 export const items = [

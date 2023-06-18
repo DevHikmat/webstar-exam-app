@@ -6,8 +6,8 @@ import { items } from "../../utils/AntdSettings";
 import { Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import logo from "../../static/images/logo1.png";
-import ExamBox from "../../components/ExamBox";
-import HistoryBox from "../../components/HistoryBox";
+import ExamBox from "../../components/ExamBox/ExamBox";
+import HistoryBox from "../../components/HistoryBox/HistoryBox";
 import "./Cabinet.scss";
 
 const { Header, Sider, Content } = Layout;

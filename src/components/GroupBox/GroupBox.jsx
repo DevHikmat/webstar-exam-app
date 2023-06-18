@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { GroupService } from "../services/GroupService";
+import { toast } from "react-toastify";
+import {
+  CheckOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Modal,
@@ -12,21 +18,15 @@ import {
   Popconfirm,
   Select,
 } from "antd";
+import { GroupService } from "../../services/GroupService";
 import {
   addGroupStart,
   addGroupSuccess,
   deleteGroup,
   updateGroupStart,
   updateGroupSuccess,
-} from "../redux/groupSlice";
-import { toast } from "react-toastify";
+} from "../../redux/groupSlice";
 import "./GroupBox.scss";
-import {
-  CheckOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
 
 const { Option } = Select;
 

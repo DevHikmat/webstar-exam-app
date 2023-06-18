@@ -1,13 +1,13 @@
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthService } from "../../services/AuthService";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { AuthService } from "../../services/AuthService";
 import {
   authUserStart,
   authUserSuccess,
   authUserFailure,
 } from "../../redux/authSlice";
-import { toast } from "react-toastify";
 import "./Login.scss";
 import { getOneUserSuccess } from "../../redux/userSlice";
 
@@ -17,7 +17,8 @@ const Login = () => {
   const email_rf = useRef();
   const passw_rf = useRef();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     dispatch(authUserStart());
     try {
       const data = await AuthService.login({
@@ -45,7 +46,7 @@ const Login = () => {
         </div>
         <div className="login-content-right">
           <h3>Login</h3>
-          <form>
+          <form onSubmit={(e) => handleLogin(e)}>
             <div className="input-box mb-3">
               <label className="fa-solid fa-envelope"></label>
               <input
@@ -53,6 +54,7 @@ const Login = () => {
                 type="email"
                 className="shadow"
                 placeholder="E-mail"
+                required
               />
             </div>
             <div className="input-box mb-3">
@@ -62,13 +64,10 @@ const Login = () => {
                 type="password"
                 className="shadow"
                 placeholder="parol"
+                required
               />
             </div>
-            <button
-              type="button"
-              onClick={handleLogin}
-              className="login-btn mb-2"
-            >
+            <button type="submit" className="login-btn mb-2">
               login
             </button>
             <div>

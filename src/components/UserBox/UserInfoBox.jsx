@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Avatar, Switch, Button, Popconfirm, Image } from "antd";
 import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
-import { UserService } from "../services/UserService";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { UserService } from "../../services/UserService";
+import { updateUserStart, updateUserSuccess } from "../../redux/userSlice";
 import "./UserInfoBox.scss";
 
 const UserInfoBox = () => {
+  const dispatch = useDispatch();
   const [viewUser, setViewUser] = useState(null);
   const { id } = useParams();
+  const { isChange } = useSelector((state) => state.users);
 
   const getViewUser = async () => {
     try {
@@ -19,9 +23,23 @@ const UserInfoBox = () => {
     }
   };
 
+  const toggleExamChange = async (accessExam) => {
+    dispatch(updateUserStart());
+    console.log(accessExam);
+    try {
+      const data = await UserService.updateUser(id, {
+        accessExam: !accessExam,
+      });
+      dispatch(updateUserSuccess());
+      console.log(data);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   useEffect(() => {
     getViewUser();
-  }, [id]);
+  }, [id, isChange]);
   return (
     <div className="user-info-box">
       <div className="row">
@@ -49,11 +67,14 @@ const UserInfoBox = () => {
           <div className="d-flex justify-content-around">
             <div className="d-flex pt-3 align-items-start flex-column h-100">
               <h5>Imtihonga ruxsat</h5>
-              <Switch
-                checkedChildren="Ha"
-                unCheckedChildren="Yo'q"
-                defaultChecked={viewUser?.accessExam}
-              />
+              {viewUser && (
+                <Switch
+                  checkedChildren="Ha"
+                  unCheckedChildren="Yo'q"
+                  defaultChecked={viewUser.accessExam}
+                  onChange={() => toggleExamChange(viewUser.accessExam)}
+                />
+              )}
             </div>
             <Popconfirm
               title="Rostdanham bu o'quvchi o'chirilsinmi?"

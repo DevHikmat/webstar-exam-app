@@ -2,17 +2,17 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { adminItems } from "../../utils/AntdSettings";
 import { Routes, Route } from "react-router-dom";
-import { UserService } from "../../services/UserService";
 import { useSelector, useDispatch } from "react-redux";
+import { adminItems } from "../../utils/AntdSettings";
+import { UserService } from "../../services/UserService";
 import { getAllUsersStart, getAllUsersSuccess } from "../../redux/userSlice";
 import logo from "../../static/images/logo1.png";
-import ExamBox from "../../components/ExamBox";
-import GroupsBox from "../../components/GroupsBox";
+import ExamBox from "../../components/ExamBox/ExamBox";
+import GroupsBox from "../../components/GroupBox/GroupBox";
 import "./Admin.scss";
-import UsersBox from "../../components/UsersBox";
-import UserInfoBox from "../../components/UserInfoBox";
+import UsersBox from "../../components/UserBox/UserBox";
+import UserInfoBox from "../../components/UserBox/UserInfoBox";
 
 const { Header, Sider, Content } = Layout;
 
