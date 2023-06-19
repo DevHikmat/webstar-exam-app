@@ -1,7 +1,7 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { items } from "../../utils/AntdSettings";
 import { Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -13,11 +13,18 @@ import "./Cabinet.scss";
 const { Header, Sider, Content } = Layout;
 
 const Cabinet = () => {
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.users);
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const handleLogout = () => {
+    localStorage.removeItem("id");
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   return (
     <div className="cabinet">
       <Layout>
@@ -37,7 +44,18 @@ const Cabinet = () => {
             theme="light"
             mode="inline"
             defaultSelectedKeys={["1"]}
-            items={items}
+            items={[
+              ...items,
+              {
+                key: "3",
+                icon: <i className="fa-solid fa-arrow-right-from-bracket"></i>,
+                label: (
+                  <div onClick={handleLogout} className="logout-box">
+                    Profildan chiqish
+                  </div>
+                ),
+              },
+            ]}
           />
         </Sider>
         <Layout>

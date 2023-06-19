@@ -12,6 +12,7 @@ import "./Signup.scss";
 import { getOneUserSuccess } from "../../redux/userSlice";
 
 const Signup = () => {
+  const { isLoading } = useSelector((state) => state.auth);
   const { groups } = useSelector((state) => state.groups);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -114,7 +115,11 @@ const Signup = () => {
                 })}
               </select>
             </div>
-            <button type="submit" className="signup-btn mb-2">
+            <button
+              disabled={isLoading}
+              type="submit"
+              className="signup-btn mb-2"
+            >
               register
             </button>
             <div>

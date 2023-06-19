@@ -33,7 +33,7 @@ const UsersBox = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [dataSource, setDataSource] = useState(null);
-  const { userList } = useSelector((state) => state.users);
+  const { userList, isLoading } = useSelector((state) => state.users);
   const { groups } = useSelector((state) => state.groups);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tempId, setTempId] = useState(null);
@@ -238,10 +238,15 @@ const UsersBox = () => {
           <Form.Item className="mb-2" label="Parol" name="password">
             <Input placeholder="Yangi parol berish" />
           </Form.Item>
-          <input className="form-control my-3" type="file" accept="image/*" ref={avatar_rf} />
+          <input
+            className="form-control my-3"
+            type="file"
+            accept="image/*"
+            ref={avatar_rf}
+          />
 
           <Form.Item>
-            <Button onClick={saveModalInfo} type="primary">
+            <Button disabled={isLoading} onClick={saveModalInfo} type="primary">
               O'zgarishlarni saqlash
             </Button>
           </Form.Item>

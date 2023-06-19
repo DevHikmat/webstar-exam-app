@@ -4,15 +4,24 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { QuizService } from "../../services/QuizService";
 import { adminItems } from "../../utils/AntdSettings";
 import { UserService } from "../../services/UserService";
+import { CategoryService } from "../../services/CategoryService";
 import { getAllUsersStart, getAllUsersSuccess } from "../../redux/userSlice";
 import logo from "../../static/images/logo1.png";
+import CategoryBox from "../../components/CategoryBox/CategoryBox";
 import ExamBox from "../../components/ExamBox/ExamBox";
 import GroupsBox from "../../components/GroupBox/GroupBox";
 import "./Admin.scss";
 import UsersBox from "../../components/UserBox/UserBox";
 import UserInfoBox from "../../components/UserBox/UserInfoBox";
+import { getQuizStart, getQuizSuccess } from "../../redux/quizSlice";
+import {
+  getAllCategoryStart,
+  getAllCategorySuccess,
+} from "../../redux/categorySlice";
 
 const { Header, Sider, Content } = Layout;
 
@@ -20,6 +29,7 @@ const Admin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isChange, currentUser } = useSelector((state) => state.users);
+  const { category } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -36,11 +46,38 @@ const Admin = () => {
     }
   };
 
+  const handleAllQuiz = async () => {
+    dispatch(getQuizStart());
+    try {
+      const data = await QuizService.getAllQuiz();
+      dispatch(getQuizSuccess(data.quizzes));
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+  const handleAllCategory = async () => {
+    dispatch(getAllCategoryStart());
+    try {
+      const data = await CategoryService.getAllCategory();
+      dispatch(getAllCategorySuccess(data.categories));
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("id");
     localStorage.removeItem("token");
     navigate("/login");
   };
+
+  useEffect(() => {
+    handleAllCategory();
+  }, [category.isChange]);
+
+  useEffect(() => {
+    handleAllQuiz();
+  }, []);
 
   useEffect(() => {
     handleAllUsers();
@@ -73,7 +110,7 @@ const Admin = () => {
             items={[
               ...adminItems,
               {
-                key: "4",
+                key: "5",
                 icon: <i className="fa-solid fa-arrow-right-from-bracket"></i>,
                 label: (
                   <div onClick={handleLogout} className="logout-box">
@@ -119,7 +156,8 @@ const Admin = () => {
             }}
           >
             <Routes>
-              <Route path="/" element={<ExamBox />} />
+              <Route path="/" element={<CategoryBox />} />
+              <Route path="/exams" element={<ExamBox />} />
               <Route path="/groups" element={<GroupsBox />} />
               <Route path="/users" element={<UsersBox />} />
               <Route path="/users/:id" element={<UserInfoBox />} />

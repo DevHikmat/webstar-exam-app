@@ -20,11 +20,6 @@ export const items = [
       </Link>
     ),
   },
-  {
-    key: "3",
-    icon: <i className="fa-solid fa-arrow-right-from-bracket"></i>,
-    label: <div className="logout-box">Profildan chiqish</div>,
-  },
 ];
 
 export const adminItems = [
@@ -33,13 +28,23 @@ export const adminItems = [
     icon: <i className="fa-solid fa-book"></i>,
     label: (
       <Link to="" style={{ textDecoration: "none" }}>
-        Imtihonlar
+        Kategoriya
       </Link>
     ),
     url: "",
   },
   {
     key: "2",
+    icon: <i className="fa-solid fa-book"></i>,
+    label: (
+      <Link to="exams" style={{ textDecoration: "none" }}>
+        Imtihonlar
+      </Link>
+    ),
+    url: "",
+  },
+  {
+    key: "3",
     icon: <i className="fa-solid fa-layer-group"></i>,
     label: (
       <Link to="groups" style={{ textDecoration: "none" }}>
@@ -49,7 +54,7 @@ export const adminItems = [
     url: "/groups",
   },
   {
-    key: "3",
+    key: "4",
     icon: <i className="fa-solid fa-user-group"></i>,
     label: (
       <Link to="users" style={{ textDecoration: "none" }}>

@@ -25,7 +25,6 @@ const UserInfoBox = () => {
 
   const toggleExamChange = async (accessExam) => {
     dispatch(updateUserStart());
-    console.log(accessExam);
     try {
       const data = await UserService.updateUser(id, {
         accessExam: !accessExam,

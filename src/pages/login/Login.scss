@@ -55,6 +55,10 @@
           color: white;
           margin-top: 20px;
           letter-spacing: 1px;
+          &:disabled {
+            background-color: rgba($color: #6356e5, $alpha: 0.7);
+            cursor: not-allowed;
+          }
         }
         a {
         }

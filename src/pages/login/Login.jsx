@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { AuthService } from "../../services/AuthService";
 import {
@@ -12,6 +12,7 @@ import "./Login.scss";
 import { getOneUserSuccess } from "../../redux/userSlice";
 
 const Login = () => {
+  const { isLoading } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const email_rf = useRef();
@@ -67,7 +68,11 @@ const Login = () => {
                 required
               />
             </div>
-            <button type="submit" className="login-btn mb-2">
+            <button
+              disabled={isLoading}
+              type="submit"
+              className="login-btn mb-2"
+            >
               login
             </button>
             <div>
