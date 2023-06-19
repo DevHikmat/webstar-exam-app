@@ -9,7 +9,15 @@ let initialState = {
 export const quizSlice = createSlice({
   name: "quiz",
   initialState,
-  reducers: {},
+  reducers: {
+    getQuizStart: (state) => {
+      state.isLoading = true;
+    },
+    getQuizSuccess: (state, action) => {
+      state.isLoading = false;
+      state.quiz = action.payload;
+    },
+  },
 });
-export const {} = quizSlice.actions;
+export const { getQuizStart,getQuizSuccess } = quizSlice.actions;
 export default quizSlice.reducer;

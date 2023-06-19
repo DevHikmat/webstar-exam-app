@@ -50,7 +50,7 @@ const UserInfoBox = () => {
                 width={100}
                 height={100}
                 style={{ objectFit: "cover", borderRadius: "10px" }}
-                src={viewUser.profilePicture}
+                src={viewUser.profilePicture.url}
               />
             ) : (
               <Avatar shape="square" size={100} icon={<UserOutlined />} />
