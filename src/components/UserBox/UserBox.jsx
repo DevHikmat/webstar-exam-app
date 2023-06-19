@@ -29,8 +29,6 @@ import {
 } from "../../redux/userSlice";
 import "./UserBox.scss";
 
-const Option = Select;
-
 const UsersBox = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -72,7 +70,7 @@ const UsersBox = () => {
       }
     }
     if (avatar_rf.current.files)
-      formData.append("image", avatar_rf.current.files[0]);
+      formData.append("profilePicture", avatar_rf.current.files[0]);
     dispatch(updateUserStart());
     try {
       const data = await UserService.updateUser(tempId, formData);
@@ -100,7 +98,7 @@ const UsersBox = () => {
     console.log(accessExam);
     dispatch(updateUserStart());
     try {
-      const data = await UserService.updateUser(id, {
+      await UserService.updateUser(id, {
         accessExam: !accessExam,
       });
       dispatch(updateUserSuccess());
@@ -130,8 +128,9 @@ const UsersBox = () => {
             <Image
               preview={{ mask: <EyeOutlined /> }}
               width="32px"
+              height="32px"
               style={{ borderRadius: "5px" }}
-              src={user.profilePicture}
+              src={user.profilePicture.url}
             />
           );
         else return <Avatar shape="square" icon={<UserOutlined />} />;
@@ -239,7 +238,7 @@ const UsersBox = () => {
           <Form.Item className="mb-2" label="Parol" name="password">
             <Input placeholder="Yangi parol berish" />
           </Form.Item>
-          {/* <input type="file" accept="image/*" ref={avatar_rf} /> */}
+          <input className="form-control my-3" type="file" accept="image/*" ref={avatar_rf} />
 
           <Form.Item>
             <Button onClick={saveModalInfo} type="primary">
