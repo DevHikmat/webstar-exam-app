@@ -12,9 +12,9 @@ const UserInfoBox = () => {
   const dispatch = useDispatch();
   const [viewUser, setViewUser] = useState(null);
   const { id } = useParams();
-  const { isChange } = useSelector((state) => state.users);
+  const { userList ,isChange} = useSelector((state) => state.users);
 
-  const getViewUser = async () => {
+  const  getViewUser = async () => {
     try {
       const data = await UserService.getOneUser(id);
       setViewUser(data);
@@ -22,7 +22,7 @@ const UserInfoBox = () => {
       console.log(error);
     }
   };
-
+  console.log(userList,"item")
   const toggleExamChange = async (accessExam) => {
     dispatch(updateUserStart());
     try {
@@ -38,7 +38,7 @@ const UserInfoBox = () => {
 
   useEffect(() => {
     getViewUser();
-  }, [id, isChange]);
+  }, [id,isChange]);
   return (
     <div className="user-info-box">
       <div className="row">

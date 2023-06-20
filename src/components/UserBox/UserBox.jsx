@@ -33,7 +33,7 @@ const UsersBox = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [dataSource, setDataSource] = useState(null);
-  const { userList, isLoading } = useSelector((state) => state.users);
+  const { userList, isLoading,isChange } = useSelector((state) => state.users);
   const { groups } = useSelector((state) => state.groups);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tempId, setTempId] = useState(null);
@@ -106,7 +106,7 @@ const UsersBox = () => {
       toast.error(error.response.data.message);
     }
   };
-
+  console.log(userList,"box")
   useEffect(() => {
     setDataSource(
       userList
@@ -115,7 +115,7 @@ const UsersBox = () => {
           return { ...user, key: index + 1 };
         })
     );
-  }, [userList]);
+  }, [userList,isChange]);
 
   const columns = [
     { key: "1", title: "#", dataIndex: "key" },
