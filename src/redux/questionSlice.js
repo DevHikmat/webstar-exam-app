@@ -2,14 +2,42 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let initialState = {
   isLoading: false,
-  question: null,
   error: null,
+  isChange: true,
 };
 
 export const questionSlice = createSlice({
-  name: "question",
+  name: "questionList",
   initialState,
-  reducers: {},
+  reducers: {
+    getAllQuestionStart: (state) => {
+      state.isLoading = true;
+    },
+    getAllQuestionSuccess: (state) => {
+      state.isLoading = false;
+    },
+    addQuestionStart: (state) => {
+      state.isLoading = true;
+    },
+    addQuestionSuccess: (state) => {
+      state.isLoading = false;
+      state.isChange = !state.isChange;
+    },
+    deleteQuestionStart: (state) => {
+      state.isLoading = true;
+    },
+    deleteQuestionSuccess: (state) => {
+      state.isLoading = false;
+      state.isChange = !state.isChange;
+    },
+  },
 });
-export const {} = questionSlice.actions;
+export const {
+  getAllQuestionStart,
+  getAllQuestionSuccess,
+  addQuestionStart,
+  addQuestionSuccess,
+  deleteQuestionStart,
+  deleteQuestionSuccess,
+} = questionSlice.actions;
 export default questionSlice.reducer;

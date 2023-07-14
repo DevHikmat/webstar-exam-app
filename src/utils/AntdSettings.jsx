@@ -10,22 +10,34 @@ export const items = [
         Imtihonlar
       </Link>
     ),
+    url: "",
   },
+  // {
+  //   key: "2",
+  //   icon: <i className="fa-solid fa-layer-group"></i>,
+  //   label: (
+  //     <Link to="history" style={{ textDecoration: "none" }}>
+  //       Imtihonlar tarixi
+  //     </Link>
+  //   ),
+  //   url: "/history",
+  // },
   {
     key: "2",
-    icon: <i className="fa-solid fa-layer-group"></i>,
+    icon: <i className="fa-solid fa-user"></i>,
     label: (
-      <Link to="history" style={{ textDecoration: "none" }}>
-        Imtihonlar tarixi
+      <Link to="profile" style={{ textDecoration: "none" }}>
+        Accaunt
       </Link>
     ),
+    url: "/profile",
   },
 ];
 
 export const adminItems = [
   {
     key: "1",
-    icon: <i className="fa-solid fa-book"></i>,
+    icon: <i className="fa-solid fa-server"></i>,
     label: (
       <Link to="" style={{ textDecoration: "none" }}>
         Kategoriya
@@ -37,11 +49,11 @@ export const adminItems = [
     key: "2",
     icon: <i className="fa-solid fa-book"></i>,
     label: (
-      <Link to="exams" style={{ textDecoration: "none" }}>
+      <Link to="quiz" style={{ textDecoration: "none" }}>
         Imtihonlar
       </Link>
     ),
-    url: "",
+    url: "/quiz",
   },
   {
     key: "3",

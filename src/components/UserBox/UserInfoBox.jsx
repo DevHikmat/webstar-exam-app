@@ -30,7 +30,6 @@ const UserInfoBox = () => {
         accessExam: !accessExam,
       });
       dispatch(updateUserSuccess());
-      console.log(data);
     } catch (error) {
       toast.error(error.response.data.message);
     }

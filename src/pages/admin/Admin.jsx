@@ -1,5 +1,5 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+import { Button, Image, Layout, Menu, theme } from "antd";
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
@@ -12,7 +12,7 @@ import { CategoryService } from "../../services/CategoryService";
 import { getAllUsersStart, getAllUsersSuccess } from "../../redux/userSlice";
 import logo from "../../static/images/logo1.png";
 import CategoryBox from "../../components/CategoryBox/CategoryBox";
-import ExamBox from "../../components/ExamBox/ExamBox";
+import QuizBox from "../../components/QuizBox/QuizBox";
 import GroupsBox from "../../components/GroupBox/GroupBox";
 import "./Admin.scss";
 import UsersBox from "../../components/UserBox/UserBox";
@@ -22,13 +22,19 @@ import {
   getAllCategoryStart,
   getAllCategorySuccess,
 } from "../../redux/categorySlice";
+import CategoryView from "../../components/CategoryBox/CategoryView";
+import QuizView from "../../components/QuizBox/QuizView";
+import { authLogout } from "../../redux/authSlice";
+import Profile from "../../components/Profile/Profile";
 
 const { Header, Sider, Content } = Layout;
 
 const Admin = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isChange, currentUser } = useSelector((state) => state.users);
+  const { currentUser } = useSelector((state) => state.auth);
+  const { isChange } = useSelector((state) => state.users);
+  const quizList = useSelector((state) => state.quiz);
   const { category } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
@@ -39,7 +45,12 @@ const Admin = () => {
   const handleAllUsers = async () => {
     dispatch(getAllUsersStart());
     try {
-      const data = await UserService.getAllUsers();
+      let data = await UserService.getAllUsers();
+      data = data
+        .filter((user) => user.role === "student")
+        .map((user, index) => {
+          return { ...user, key: index + 1 };
+        });
       dispatch(getAllUsersSuccess(data));
     } catch (error) {
       console.log(error);
@@ -68,6 +79,7 @@ const Admin = () => {
   const handleLogout = () => {
     localStorage.removeItem("id");
     localStorage.removeItem("token");
+    dispatch(authLogout());
     navigate("/login");
   };
 
@@ -77,7 +89,7 @@ const Admin = () => {
 
   useEffect(() => {
     handleAllQuiz();
-  }, []);
+  }, [quizList.isChange]);
 
   useEffect(() => {
     handleAllUsers();
@@ -124,6 +136,9 @@ const Admin = () => {
         <Layout>
           <Header
             style={{
+              position: "sticky",
+              top: 0,
+              zIndex: "999",
               padding: 0,
               background: colorBgContainer,
             }}
@@ -140,11 +155,23 @@ const Admin = () => {
               }}
             />
             <div className="user-title">
-              <h4>
-                <Link to="profile">
-                  {currentUser?.firstname} {currentUser?.lastname}
-                </Link>
-              </h4>
+              <div className="d-flex align-items-center gap-2">
+                <div className="user-title-avatar">
+                  {currentUser?.profilePicture ? (
+                    <Image src={currentUser.profilePicture.url} />
+                  ) : (
+                    <Image
+                      src="error"
+                      fallback="https://www.transparentpng.com/thumb/user/gray-user-profile-icon-png-fP8Q1P.png"
+                    />
+                  )}
+                </div>
+                <h4>
+                  <Link to="profile">
+                    {currentUser?.firstname} {currentUser?.lastname}
+                  </Link>
+                </h4>
+              </div>
             </div>
           </Header>
           <Content
@@ -157,7 +184,10 @@ const Admin = () => {
           >
             <Routes>
               <Route path="/" element={<CategoryBox />} />
-              <Route path="/exams" element={<ExamBox />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/category/:id" element={<CategoryView />} />
+              <Route path="/quiz" element={<QuizBox />} />
+              <Route path="/quiz/:id" element={<QuizView />} />
               <Route path="/groups" element={<GroupsBox />} />
               <Route path="/users" element={<UsersBox />} />
               <Route path="/users/:id" element={<UserInfoBox />} />

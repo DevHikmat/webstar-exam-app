@@ -9,4 +9,8 @@ export const CategoryService = {
     const res = await axiosInstance.post("/category", formData);
     return res.data;
   },
+  async deleteCategory(id) {
+    const res = await axiosInstance.delete(`/category/${id}`);
+    return res.data;
+  },
 };

@@ -1,7 +1,9 @@
 .cabinet {
   .ant-layout {
-    min-height: 100vh;
     aside {
+      height: 100vh;
+      position: sticky;
+      top: 0;
       .demo-logo-vertical {
         padding: 15px;
       }
@@ -34,11 +36,27 @@
       align-items: center;
       padding-right: 16px !important;
       .user-title {
+        &-avatar {
+          .ant-image {
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &-img {
+              height: 50px;
+              border-radius: 50%;
+            }
+            &-mask {
+              height: 50px;
+              border-radius: 50%;
+            }
+          }
+        }
         h4 {
           a {
             text-decoration: none;
             color: #444;
-            font-size: 18px;
+            font-size: 16px;
           }
         }
       }

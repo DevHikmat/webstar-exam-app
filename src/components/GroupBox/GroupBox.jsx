@@ -95,7 +95,6 @@ const GroupsBox = () => {
     let group = { name: editName, company: editCompany };
     try {
       const data = await GroupService.updateGroup(editingRow, group);
-      console.log(data);
       dispatch(updateGroupSuccess());
       toast.success(data.message);
       setEditingRow(null);

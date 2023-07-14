@@ -2,10 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoading: false,
-  currentUser: null,
   userList: null,
-  viewUser: null,
-  error: null,
   isChange: false,
 };
 
@@ -25,9 +22,11 @@ const userSlice = createSlice({
     getOneUserStart: (state) => {
       state.isLoading = true;
     },
-    getOneUserSuccess: (state, action) => {
+    getOneUserSuccess: (state) => {
       state.isLoading = false;
-      state.currentUser = action.payload;
+    },
+    getOneUserFailure: (state) => {
+      state.isLoading = false;
     },
     // UPDATE USER
     updateUserStart: (state) => {
@@ -47,12 +46,7 @@ const userSlice = createSlice({
     },
     deleteUserSuccess: (state) => {
       state.isLoading = false;
-      state.currentUser = null;
       state.isChange = !state.isChange;
-    },
-    // LOGOUT USER
-    logoutUser: (state) => {
-      state.currentUser = null;
     },
   },
 });
@@ -61,11 +55,11 @@ export const {
   getAllUsersSuccess,
   getOneUserStart,
   getOneUserSuccess,
+  getOneUserFailure,
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
   deleteUserStart,
   deleteUserSuccess,
-  logoutUser,
 } = userSlice.actions;
 export default userSlice.reducer;

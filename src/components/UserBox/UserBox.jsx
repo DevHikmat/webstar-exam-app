@@ -10,6 +10,7 @@ import {
   Input,
   Image,
   Avatar,
+  Divider,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -50,10 +51,8 @@ const UsersBox = () => {
   const handleFillModal = (id) => {
     showModal();
     setTempId(id);
-
     const user = userList.find((item) => item._id === id);
     const group = groups.find((group) => group._id === user.group);
-
     form.setFieldsValue({
       firstname: user.firstname,
       lastname: user.lastname,
@@ -95,7 +94,6 @@ const UsersBox = () => {
   };
 
   const toggleExamChange = async (id, accessExam) => {
-    console.log(accessExam);
     dispatch(updateUserStart());
     try {
       await UserService.updateUser(id, {
@@ -108,14 +106,24 @@ const UsersBox = () => {
   };
 
   useEffect(() => {
-    setDataSource(
-      userList
-        ?.filter((user) => user.role === "student")
-        .map((user, index) => {
-          return { ...user, key: index + 1 };
-        })
-    );
+    setDataSource(userList);
   }, [userList]);
+
+  // SEARCH
+  const searchByName = (value) => {
+    setDataSource(
+      userList.filter((user) =>
+        user.firstname.toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  };
+  const searchBySurname = (value) => {
+    setDataSource(
+      userList.filter((user) =>
+        user.lastname.toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  };
 
   const columns = [
     { key: "1", title: "#", dataIndex: "key" },
@@ -184,6 +192,21 @@ const UsersBox = () => {
 
   return (
     <div className="user-box">
+      <Divider orientation="left">Qidirish</Divider>
+      <div className="row mb-5">
+        <div className="col-3">
+          <Input
+            placeholder="Ism bo'yicha"
+            onChange={(e) => searchByName(e.target.value)}
+          />
+        </div>
+        <div className="col-3">
+          <Input
+            placeholder="Familya bo'yicha"
+            onChange={(e) => searchBySurname(e.target.value)}
+          />
+        </div>
+      </div>
       <Table columns={columns} dataSource={dataSource} size="small" />
       <Modal
         width={350}

@@ -1,20 +1,27 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Button, Image, Layout, Menu, theme } from "antd";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { items } from "../../utils/AntdSettings";
 import { Routes, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import logo from "../../static/images/logo1.png";
-import ExamBox from "../../components/ExamBox/ExamBox";
+import QuizBox from "../../components/QuizBox/QuizBox";
 import HistoryBox from "../../components/HistoryBox/HistoryBox";
 import "./Cabinet.scss";
+import { getQuizStart, getQuizSuccess } from "../../redux/quizSlice";
+import { QuizService } from "../../services/QuizService";
+import QuizUserView from "../../components/QuizBox/QuizUserView";
+import { authLogout } from "../../redux/authSlice";
+import Profile from "../../components/Profile/Profile";
 
 const { Header, Sider, Content } = Layout;
 
 const Cabinet = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { currentUser } = useSelector((state) => state.users);
+  const { currentUser } = useSelector((state) => state.auth);
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
@@ -23,8 +30,28 @@ const Cabinet = () => {
   const handleLogout = () => {
     localStorage.removeItem("id");
     localStorage.removeItem("token");
+    dispatch(authLogout());
     navigate("/login");
   };
+
+  const handleGetAllQuiz = async () => {
+    dispatch(getQuizStart());
+    try {
+      const data = await QuizService.getAllQuiz();
+      dispatch(
+        getQuizSuccess(
+          data.quizzes.map((que, index) => ({ ...que, key: index }))
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetAllQuiz();
+  }, []);
+
   return (
     <div className="cabinet">
       <Layout>
@@ -43,7 +70,13 @@ const Cabinet = () => {
           <Menu
             theme="light"
             mode="inline"
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={[
+              String(
+                items.findIndex(
+                  (item) => "/cabinet" + item.url === location.pathname
+                ) + 1
+              ),
+            ]}
             items={[
               ...items,
               {
@@ -61,6 +94,9 @@ const Cabinet = () => {
         <Layout>
           <Header
             style={{
+              position: "sticky",
+              top: 0,
+              zIndex: "999",
               padding: 0,
               background: colorBgContainer,
             }}
@@ -77,11 +113,23 @@ const Cabinet = () => {
               }}
             />
             <div className="user-title">
-              <h4>
-                <Link to="profile">
-                  {currentUser?.firstname} {currentUser?.lastname}
-                </Link>
-              </h4>
+              <div className="d-flex align-items-center gap-2">
+                <div className="user-title-avatar">
+                  {currentUser?.profilePicture ? (
+                    <Image src={currentUser.profilePicture.url} />
+                  ) : (
+                    <Image
+                      src="error"
+                      fallback="https://www.transparentpng.com/thumb/user/gray-user-profile-icon-png-fP8Q1P.png"
+                    />
+                  )}
+                </div>
+                <h4>
+                  <Link to="profile">
+                    {currentUser?.firstname} {currentUser?.lastname}
+                  </Link>
+                </h4>
+              </div>
             </div>
           </Header>
           <Content
@@ -93,7 +141,9 @@ const Cabinet = () => {
             }}
           >
             <Routes>
-              <Route path="/" element={<ExamBox />} />
+              <Route path="/" element={<QuizBox />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/quiz/:id" element={<QuizUserView />} />
               <Route path="/history" element={<HistoryBox />} />
             </Routes>
           </Content>

@@ -25,6 +25,13 @@ export const categorySlice = createSlice({
       state.isLoading = false;
       state.isChange = !state.isChange;
     },
+    deleteCategoryStart: (state) => {
+      state.isLoading = true;
+    },
+    deleteCategorySuccess: (state) => {
+      state.isLoading = false;
+      state.isChange = !state.isChange;
+    },
   },
 });
 export const {
@@ -32,5 +39,7 @@ export const {
   getAllCategorySuccess,
   createCategoryStart,
   createCategorySuccess,
+  deleteCategoryStart,
+  deleteCategorySuccess,
 } = categorySlice.actions;
 export default categorySlice.reducer;

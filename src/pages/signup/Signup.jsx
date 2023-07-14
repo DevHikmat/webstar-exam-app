@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { message } from "antd";
 import { AuthService } from "../../services/AuthService";
 import {
   authUserStart,
@@ -9,7 +10,6 @@ import {
   authUserFailure,
 } from "../../redux/authSlice";
 import "./Signup.scss";
-import { getOneUserSuccess } from "../../redux/userSlice";
 
 const Signup = () => {
   const { isLoading } = useSelector((state) => state.auth);
@@ -32,13 +32,11 @@ const Signup = () => {
       const data = await AuthService.signup(user);
       localStorage.setItem("id", data.user._id);
       localStorage.setItem("token", data.token);
-      dispatch(authUserSuccess());
-      dispatch(getOneUserSuccess(data.user));
-      toast.success("Kirish muvoffaqiyatli amalga oshirildi!");
-      data.user.role === "admin" ? navigate("/admin") : navigate("/cabinet");
+      dispatch(authUserSuccess(data.user));
+      message.success(`Salom ${data.user.firstname}!`);
     } catch (error) {
-      dispatch(authUserFailure(error.response.data.message));
-      toast.error(error.response.data.message);
+      dispatch(authUserFailure());
+      toast.error("Bunday foydalanuvchi allaqachon ro'yxatdan o'tgan!");
     }
   };
   return (

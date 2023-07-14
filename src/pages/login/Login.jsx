@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { message } from "antd";
 import { AuthService } from "../../services/AuthService";
 import {
   authUserStart,
@@ -9,7 +10,6 @@ import {
   authUserFailure,
 } from "../../redux/authSlice";
 import "./Login.scss";
-import { getOneUserSuccess } from "../../redux/userSlice";
 
 const Login = () => {
   const { isLoading } = useSelector((state) => state.auth);
@@ -28,15 +28,11 @@ const Login = () => {
       });
       localStorage.setItem("id", data.user._id);
       localStorage.setItem("token", data.token);
-      dispatch(authUserSuccess());
-      dispatch(getOneUserSuccess(data.user));
-      toast.success("Kirish muvoffaqiyatli amalga oshirildi!");
-      console.log(data);
-      data.user.role === "admin" ? navigate("/admin") : navigate("/cabinet");
+      dispatch(authUserSuccess(data.user));
+      message.success(`Salom ${data.user.firstname}!`);
     } catch (error) {
-      console.log(error);
-      dispatch(authUserFailure(error.response.data.message));
-      toast.error(error.response.data.message);
+      dispatch(authUserFailure());
+      toast.error("Bu foydalanuvchi topilmadi!");
     }
   };
   return (

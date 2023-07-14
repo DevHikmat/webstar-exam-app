@@ -8,26 +8,30 @@ import {
   getGroupsSuccess,
   getGroupsFailure,
 } from "./redux/groupSlice";
-import { getOneUserStart, getOneUserSuccess } from "./redux/userSlice";
+import {
+  authUserStart,
+  authUserSuccess,
+  authUserFailure,
+} from "./redux/authSlice";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import Cabinet from "./pages/cabinet/Cabinet";
 import Admin from "./pages/admin/Admin";
-import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
+  const { isLogin } = useSelector((state) => state.auth);
+  const { isChange } = useSelector((state) => state.groups);
+
   const location = useLocation();
   const dispatch = useDispatch();
-  const { isChange } = useSelector((state) => state.groups);
   const navigate = useNavigate();
-  const [protectedRoute, setProtectedRoute] = useState([]);
+
+  const [protectedRoute, setProtectedRoute] = useState(null);
   const [adminRoute, setAdminRoute] = useState([
     { path: "/admin/*", element: <Admin /> },
-    { path: "/", element: <Dashboard /> },
   ]);
   const [studentRoute, setStudentRoute] = useState([
     { path: "/cabinet/*", element: <Cabinet /> },
-    { path: "/", element: <Dashboard /> },
   ]);
 
   const handleGroups = async () => {
@@ -41,20 +45,20 @@ function App() {
   };
 
   const getCurrentUser = async () => {
-    dispatch(getOneUserStart());
+    dispatch(authUserStart());
     const id = localStorage.getItem("id");
     try {
       const data = await UserService.getOneUser(id);
-      if (!data) navigate("/login");
       if (data.role === "admin") {
-        !location.pathname.startsWith("/admin") && navigate("/admin");
         setProtectedRoute(adminRoute);
+        !location.pathname.startsWith("/admin") && navigate("/admin");
       } else if (data.role === "student") {
-        !location.pathname.startsWith("/cabinet") && navigate("/cabinet");
         setProtectedRoute(studentRoute);
+        !location.pathname.startsWith("/cabinet") && navigate("/cabinet");
       }
-      dispatch(getOneUserSuccess(data));
+      dispatch(authUserSuccess(data));
     } catch (error) {
+      dispatch(authUserFailure());
       navigate("/login");
     }
   };
@@ -62,7 +66,7 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem("token")) getCurrentUser();
     else navigate("/login");
-  }, []);
+  }, [isLogin]);
 
   useEffect(() => {
     handleGroups();

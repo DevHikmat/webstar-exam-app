@@ -6,23 +6,24 @@
   align-items: center;
   &-content {
     background-color: white;
-    width: 50%;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
     padding: 50px;
     border-radius: 20px;
     &-left {
       display: flex;
       align-items: center;
-      width: 40%;
       img {
-        max-width: 100%;
+        width: 100%;
         height: 200px;
+        display: block;
         border-radius: 50%;
       }
     }
     &-right {
       text-align: center;
-      width: 60%;
       h3 {
         color: #6356e5;
         margin-bottom: 30px;
@@ -63,6 +64,14 @@
         a {
         }
       }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .login {
+    &-content {
+      padding: 50px 20px;
     }
   }
 }

@@ -2,8 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let initialState = {
   isLoading: false,
-  quiz: null,
+  isChange: false,
+  currentQuiz: null,
+  quizList: null,
   error: null,
+  isFinished: false,
+  totalScore: {
+    correctCount: 0,
+    wrongAttemps: [],
+  },
 };
 
 export const quizSlice = createSlice({
@@ -15,9 +22,52 @@ export const quizSlice = createSlice({
     },
     getQuizSuccess: (state, action) => {
       state.isLoading = false;
-      state.quiz = action.payload;
+      state.quizList = action.payload;
+    },
+    getOneQuizStart: (state) => {
+      state.isLoading = true;
+    },
+    getOneQuizSuccess: (state, action) => {
+      state.isLoading = false;
+      state.currentQuiz = action.payload;
+    },
+    addQuizStart: (state) => {
+      state.isLoading = true;
+    },
+    addQuizSuccess: (state) => {
+      state.isLoading = false;
+      state.isChange = !state.isChange;
+    },
+    addQuizFailure: (state) => {
+      state.isLoading = false;
+    },
+    deleteQuizStart: (state) => {
+      state.isLoading = true;
+    },
+    deleteQuizSuccess: (state) => {
+      state.isLoading = false;
+      state.isChange = !state.isChange;
+    },
+    quizExamStart: (state) => {
+      state.isFinished = false;
+    },
+    quizFinishSuccess: (state, action) => {
+      state.isFinished = true;
+      state.totalScore = action.payload;
     },
   },
 });
-export const { getQuizStart,getQuizSuccess } = quizSlice.actions;
+export const {
+  getQuizStart,
+  getQuizSuccess,
+  getOneQuizStart,
+  getOneQuizSuccess,
+  addQuizStart,
+  addQuizSuccess,
+  deleteQuizStart,
+  deleteQuizSuccess,
+  addQuizFailure,
+  quizExamStart,
+  quizFinishSuccess,
+} = quizSlice.actions;
 export default quizSlice.reducer;
